@@ -1,7 +1,23 @@
 import React, { Component } from "react";
 import { NavItem, Nav, NavDropdown, MenuItem } from "react-bootstrap";
+import CustomButton from "../CustomButton/CustomButton";
 
 class HeaderLinks extends Component {
+  spotifyLogin() {
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        // Typical action to be performed when the document is ready:
+        let xhttpResponse = JSON.parse(xhttp.responseText);
+        let redirectURI = xhttpResponse['request uri'];
+        window.location.replace(redirectURI);
+      }
+    };
+    xhttp.open("GET", "http://localhost:8080/getUserCredentials", true);
+    xhttp.send();
+    console.log(xhttp.responseText);
+  }
+
   render() {
     const notification = (
       <div>
@@ -55,6 +71,7 @@ class HeaderLinks extends Component {
           <NavItem eventKey={3} href="#">
             Log out
           </NavItem>
+          <CustomButton onClick={this.spotifyLogin}>Log in with Spotify</CustomButton>
         </Nav>
       </div>
     );
